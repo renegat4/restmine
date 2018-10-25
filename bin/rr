@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+// vim:ft=javascript
+
+const { basename, join } = require('path');
+const { appendFileSync, readFileSync, existsSync } = require('fs');
+
+const execName = basename(process.argv[1]);
+
+const Api = require('../lib/api');
+const Cli = require('../lib/cli');
+const Git = require('../lib/git');
+
+const git = new Git();
+const argv = process.argv.slice(2);
+
+if (!git.isRepo()) {
+  console.error('not a git repository');
+  process.exit(1);
+}
+
+const cmd = execName == 'rr' ? argv.shift() : execName;
+
+if (cmd === 'setup') {
+  require('../lib/setup')();
+  process.exit(1);
+}
+
+if (!existsSync('.restmine.json')) {
+  console.log('run `rr setup` first');
+  process.exit(1);
+}
+
+const config = JSON.parse(readFileSync(join(git.getTopLevel(), '.restmine.json'), 'utf-8'));
+
+const api = new Api(config.host, config.https, config.key);
+const fs = { appendFileSync: appendFileSync };
+const cli = new Cli(api, git, config, fs);
+
+switch (cmd) {
+  case 'statuses':
+    cli.getIssueStatuses();
+    break;
+  /*
+   * requires project
+  case 'categories':
+    cli.getIssueCategories();
+    break;
+  */
+  case 'showTicket':
+  case 'show':
+  case 's':
+    cli.showTicket(argv[0]);
+    break;
+  case 'logTime':
+    cli.logTime(argv[0], argv[1], argv[2]);
+    break;
+  case 'post-checkout':
+    cli.post_checkout(argv[0], argv[1], argv[2]);
+    break;
+  case 'commit-msg':
+    cli.commit_msg(argv[0]);
+    break;
+  default:
+    cli.info();
+    break;
+}
