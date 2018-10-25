@@ -10,6 +10,10 @@
   "directories": {
     "lib": "lib"
   },
+  "repository": {
+        "type": "git",
+        "url": "git@github.com:renegat4/restmine.git"
+  },
   "scripts": {
     "test": "mocha",
     "lint": "eslint lib bin --fix",
