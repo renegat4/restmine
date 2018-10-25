@@ -1,6 +1,6 @@
 {
   "name": "restmine",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "link git with redmine to automatically add refs to commits, log time on tickets...",
   "keywords": [
     "git",
@@ -11,8 +11,8 @@
     "lib": "lib"
   },
   "repository": {
-        "type": "git",
-        "url": "git@github.com:renegat4/restmine.git"
+    "type": "git",
+    "url": "git@github.com:renegat4/restmine.git"
   },
   "scripts": {
     "test": "mocha",
