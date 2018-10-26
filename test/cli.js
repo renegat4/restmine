@@ -148,10 +148,10 @@ describe('Cli', () => {
   describe('enterIssueBranch()', () => {
     let api = { getTicket: function () {} };
     let cli;
-    const data = '{ "issue": { "id": 12 } }';
+    const testTicket = { id: 12 };
 
     beforeEach(() => {
-      sinon.stub(api, 'getTicket').returns(Promise.resolve(data));
+      sinon.stub(api, 'getTicket').returns(Promise.resolve(testTicket));
       cli = new Cli(api, {}, {}, 1);
       sinon.stub(cli, 'printTicket').returns('halo')
       sinon.stub(cli, 'takeOver');

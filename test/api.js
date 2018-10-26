@@ -28,10 +28,10 @@ describe('Api', () => {
     });
 
     it('should call sendRequest()', () => {
-      api.sendRequest.returns(Promise.resolve('hier'));
+      api.sendRequest.returns(Promise.resolve('{ "issue": { "id": 17 } }'));
       return api.getTicket(17)
         .then(_ => {
-          expect(_).to.equal('hier');
+          expect(_).to.eql({ id: 17 });
           expect(api.sendRequest).to.have.been.calledWith('GET', '/issues/17.json');
         });
     });
