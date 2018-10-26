@@ -4,8 +4,6 @@
 const { basename, join } = require('path');
 const { appendFileSync, readFileSync, existsSync } = require('fs');
 
-const execName = basename(process.argv[1]);
-
 const Api = require('../lib/api');
 const Cli = require('../lib/cli');
 const Git = require('../lib/git');
@@ -18,6 +16,7 @@ if (!git.isRepo()) {
   process.exit(1);
 }
 
+const execName = basename(process.argv[1]);
 const cmd = execName == 'rr' ? argv.shift() : execName;
 
 if (cmd === 'setup') {
