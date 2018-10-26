@@ -67,7 +67,7 @@ This is three characters followed by a number.
 The characters correspond to the configured `..._activityid`
 and the number is the issue id.
 
-# Show an issue
+## show an issue
 
 restmine can show the current issue:
 
