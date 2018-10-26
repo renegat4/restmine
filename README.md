@@ -45,13 +45,17 @@ restmines configuration.
         "userid": the users id in redmine,
         "edit_id": the id of 'assigned' status,
         "category_id": the category id which will be set on take-over,
-        "iss_activityid": the activity id for time logged on issues,
-        "org_activityid": activity id for time logged on 'orga'-issues
+        "activity": {
+          "iss": the activity id for time logged on issues,
+          "org": activity id for time logged on 'orga'-issues
+        }
     }
 
-`iss_activityid` is required. `org_activityid` is an example.
+`activity.iss` is required. `activity.org` is an example.
 
-(Currently you need to find the `category_id` and `activity_id` by examining
+If `category_id` is undefined restmine will not touch the issue-category.
+
+(Currently you need to find the `category_id` and `activity ids` by examining
 the redmine website. For a list of statuses there is `rr statuses`.)
 
 ## issue-branches
