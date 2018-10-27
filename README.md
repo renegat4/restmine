@@ -40,16 +40,16 @@ restmines configuration.
 
     {
       "host": "hostname where redmine is installed (redmine.example.com)",
-        "https": boolean (true ->use https),
-        "key": the users API-key,
-        "user_id": the users id in redmine,
-        "project_id": the project id in redmine,
-        "edit_id": the id of 'assigned' status,
-        "category_id": the category id which will be set on take-over,
-        "activity": {
-          "iss": the activity id for time logged on issues,
-          "org": activity id for time logged on 'orga'-issues
-        }
+      "https": boolean (true ->use https),
+      "key": the users API-key,
+      "user_id": the users id in redmine,
+      "project_id": the project id in redmine,
+      "edit_id": the id of 'assigned' status,
+      "category_id": the category id which will be set on take-over,
+      "activity": {
+        "iss": the activity id for time logged on issues,
+        "org": activity id for time logged on 'orga'-issues
+      }
     }
 
 `activity.iss` is required. `activity.org` is an example.
