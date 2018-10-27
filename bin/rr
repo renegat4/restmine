@@ -31,7 +31,7 @@ if (!existsSync('.restmine.json')) {
 
 const config = JSON.parse(readFileSync(join(git.getTopLevel(), '.restmine.json'), 'utf-8'));
 
-const api = new Api(config.host, config.https, config.key);
+const api = new Api(config);
 const fs = { appendFileSync: appendFileSync };
 const cli = new Cli(api, git, config, fs);
 
@@ -39,12 +39,9 @@ switch (cmd) {
   case 'statuses':
     cli.getIssueStatuses();
     break;
-  /*
-   * requires project
   case 'categories':
     cli.getIssueCategories();
     break;
-  */
   case 'showTicket':
   case 'show':
   case 's':
