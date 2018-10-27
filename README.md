@@ -86,3 +86,8 @@ Or an arbitrary one:
 
     $ rr show 1234
 
+## show assigned issues
+
+restmine can list all open issues:
+
+    $ rr issues
