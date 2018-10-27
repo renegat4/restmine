@@ -42,7 +42,7 @@ restmines configuration.
       "host": "hostname where redmine is installed (redmine.example.com)",
         "https": boolean (true ->use https),
         "key": the users API-key,
-        "userid": the users id in redmine,
+        "user_id": the users id in redmine,
         "edit_id": the id of 'assigned' status,
         "category_id": the category id which will be set on take-over,
         "activity": {
