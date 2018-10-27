@@ -43,6 +43,7 @@ restmines configuration.
         "https": boolean (true ->use https),
         "key": the users API-key,
         "user_id": the users id in redmine,
+        "project_id": the project id in redmine,
         "edit_id": the id of 'assigned' status,
         "category_id": the category id which will be set on take-over,
         "activity": {
@@ -55,8 +56,12 @@ restmines configuration.
 
 If `category_id` is undefined restmine will not touch the issue-category.
 
-(Currently you need to find the `category_id` and `activity ids` by examining
-the redmine website. For a list of statuses there is `rr statuses`.)
+You can find the `category_id` and `activity ids` by examining
+the redmine website. Or after authentication is configured by running the
+commands:
+
+    $ rr statuses
+    $ rr categories
 
 ## issue-branches
 
