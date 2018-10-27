@@ -294,7 +294,7 @@ describe('Cli', () => {
     let cli;
 
     const config = {
-      userid: 2,
+      user_id: 2,
       category_id: 3,
       edit_id: 4
     };
