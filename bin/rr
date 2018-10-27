@@ -42,6 +42,10 @@ switch (cmd) {
   case 'categories':
     cli.getIssueCategories();
     break;
+  case 'issues':
+  case 'i':
+    cli.showIssues();
+    break;
   case 'showTicket':
   case 'show':
   case 's':
