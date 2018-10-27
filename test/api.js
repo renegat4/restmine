@@ -15,7 +15,7 @@ describe('Api', () => {
     let api;
 
     before(() => {
-      api = new Api();
+      api = new Api({ https: true });
       sinon.stub(api, 'sendRequest');
     });
 
@@ -41,7 +41,7 @@ describe('Api', () => {
     let api;
 
     before(() => {
-      api = new Api();
+      api = new Api({ https: true });
       sinon.stub(api, 'sendRequest');
     });
 
@@ -64,7 +64,7 @@ describe('Api', () => {
     let api;
 
     before(() => {
-      api = new Api();
+      api = new Api({ https: true });
       sinon.stub(api, 'sendRequest');
     });
 
@@ -94,7 +94,7 @@ describe('Api', () => {
     let api;
 
     before(() => {
-      api = new Api();
+      api = new Api({ https: true });
     });
     
     it('should be a function', () => {
