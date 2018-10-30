@@ -312,24 +312,27 @@ describe('Cli', () => {
     });
 
     it('should return a timeDef-object', () => {
-      const timeDef = cli.parseLogTimeArgs([]);
+      const timeDef = cli.parseLogTimeArgs(['4:00']);
       expect(timeDef).to.have.all.keys('issue_id', 'hours', 'activity_id', 'spent_on');
+    });
+
+    describe('issue_id', () => {
     });
 
     describe('spent_on', () => {
       it('should be today', () => {
         const now = new Date().toISOString().split('T')[0];
-        const timeDef = cli.parseLogTimeArgs([]);
+        const timeDef = cli.parseLogTimeArgs(['3:00']);
         expect(timeDef.spent_on).to.equal(now);
       });
 
       it('should be the given date', () => {
-        expect(cli.parseLogTimeArgs(['2018-10-20']).spent_on).to.equal('2018-10-20');
-        expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', 'v']).spent_on).to.equal('2018-10-20');
-        expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', '2018-10-21']).spent_on).to.equal('2018-10-21');
-        expect(cli.parseLogTimeArgs(['2018-10-21', 'asd']).spent_on).to.equal('2018-10-21');
-        expect(cli.parseLogTimeArgs(['2018-10-21', '2018']).spent_on).to.equal('2018-10-21');
-        expect(cli.parseLogTimeArgs(['2018-10-21', '2018-10-2']).spent_on).to.equal('2018-10-21');
+        expect(cli.parseLogTimeArgs(['2018-10-20', '2:30']).spent_on).to.equal('2018-10-20');
+        expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', 'v', '2:30']).spent_on).to.equal('2018-10-20');
+        expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', '2018-10-21', '2:30']).spent_on).to.equal('2018-10-21');
+        expect(cli.parseLogTimeArgs(['2018-10-21', 'asd', '2:30']).spent_on).to.equal('2018-10-21');
+        expect(cli.parseLogTimeArgs(['2018-10-21', '2018', '2:30']).spent_on).to.equal('2018-10-21');
+        expect(cli.parseLogTimeArgs(['2018-10-21', '2018-10-2', '2:30']).spent_on).to.equal('2018-10-21');
       });
     });
 
@@ -339,18 +342,24 @@ describe('Cli', () => {
         expect(cli.parseLogTimeArgs([':30']).hours).to.equal('0.50');
         expect(cli.parseLogTimeArgs([':25']).hours).to.equal('0.42');
         expect(cli.parseLogTimeArgs(['3:00']).hours).to.equal('3.00');
+        expect(() => cli.parseLogTimeArgs([])).to.throw('no time given');
+        expect(() => cli.parseLogTimeArgs([':00'])).to.throw('no time given?');
+        expect(() => cli.parseLogTimeArgs([':0'])).to.throw('no time given?');
+        expect(() => cli.parseLogTimeArgs(['0:00'])).to.throw('no time given?');
+        expect(() => cli.parseLogTimeArgs(['100:00'])).to.throw('no time given?');
+        expect(() => cli.parseLogTimeArgs(['10:200'])).to.throw('no time given?');
       });
     });
 
     describe('activity_id', () => {
       it('should use default (iss) activity_id', () => {
-        expect(cli.parseLogTimeArgs([]).activity_id).to.equal(33);
+        expect(cli.parseLogTimeArgs(['1:00']).activity_id).to.equal(33);
       });
 
       it('should be the id of the given activity-code', () => {
-        expect(cli.parseLogTimeArgs(['iss']).activity_id).to.equal(33);
-        expect(cli.parseLogTimeArgs(['asd']).activity_id).to.equal(12);
-        expect(() => cli.parseLogTimeArgs(['tst'])).to.throw('unknown activity tst');
+        expect(cli.parseLogTimeArgs(['iss', '1:00']).activity_id).to.equal(33);
+        expect(cli.parseLogTimeArgs(['asd', '1:00']).activity_id).to.equal(12);
+        expect(() => cli.parseLogTimeArgs(['tst', ':00'])).to.throw('unknown activity tst');
       });
     });
   });
