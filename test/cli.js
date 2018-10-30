@@ -290,6 +290,46 @@ describe('Cli', () => {
 
   });
 
+  describe.only('parseLogTimeArgs()', () => {
+    let cli;
+
+    const config = {
+      user_id: 2,
+      category_id: 3,
+      edit_id: 4
+    };
+
+    const api = {};
+    const git = {};
+    const fs = {};
+
+    before(() => {
+      cli = new Cli(api, git, config, fs);
+    });
+
+    it('should return a timeDef-object', () => {
+      const timeDef = cli.parseLogTimeArgs([]);
+      expect(timeDef).to.have.all.keys('issue_id', 'hours', 'activity_id', 'spent_on');
+    });
+
+    describe('spent_on', () => {
+      it('should be today', () => {
+        const now = new Date().toISOString().split('T')[0];
+        const timeDef = cli.parseLogTimeArgs([]);
+        expect(timeDef.spent_on).to.equal(now);
+      });
+
+      it('should be the given date', () => {
+        expect(cli.parseLogTimeArgs(['2018-10-20']).spent_on).to.equal('2018-10-20');
+        expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', 'v']).spent_on).to.equal('2018-10-20');
+        expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', '2018-10-21']).spent_on).to.equal('2018-10-21');
+        expect(cli.parseLogTimeArgs(['2018-10-21', 'asd']).spent_on).to.equal('2018-10-21');
+        expect(cli.parseLogTimeArgs(['2018-10-21', '2018']).spent_on).to.equal('2018-10-21');
+        expect(cli.parseLogTimeArgs(['2018-10-21', '2018-10-2']).spent_on).to.equal('2018-10-21');
+      });
+    });
+  });
+
   describe('takeOver()', () => {
     let cli;
 
