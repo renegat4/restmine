@@ -317,6 +317,12 @@ describe('Cli', () => {
     });
 
     describe('issue_id', () => {
+      it('should be the given id', () => {
+        expect(cli.parseLogTimeArgs(['0:30', '1234']).issue_id).to.equal('1234');
+        expect(cli.parseLogTimeArgs(['456', '0:30', '1234']).issue_id).to.equal('1234');
+        expect(cli.parseLogTimeArgs(['456', '0:30']).issue_id).to.equal('456');
+        expect(cli.parseLogTimeArgs(['45', '0:30']).issue_id).to.equal('45');
+      });
     });
 
     describe('spent_on', () => {
