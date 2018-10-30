@@ -296,7 +296,11 @@ describe('Cli', () => {
     const config = {
       user_id: 2,
       category_id: 3,
-      edit_id: 4
+      edit_id: 4,
+      activity: {
+        asd: 12,
+        iss: 33
+      }
     };
 
     const api = {};
@@ -326,6 +330,27 @@ describe('Cli', () => {
         expect(cli.parseLogTimeArgs(['2018-10-21', 'asd']).spent_on).to.equal('2018-10-21');
         expect(cli.parseLogTimeArgs(['2018-10-21', '2018']).spent_on).to.equal('2018-10-21');
         expect(cli.parseLogTimeArgs(['2018-10-21', '2018-10-2']).spent_on).to.equal('2018-10-21');
+      });
+    });
+
+    describe('hours', () => {
+      it('should be the given hours in decimal', () => {
+        expect(cli.parseLogTimeArgs(['2:30']).hours).to.equal('2.50');
+        expect(cli.parseLogTimeArgs([':30']).hours).to.equal('0.50');
+        expect(cli.parseLogTimeArgs([':25']).hours).to.equal('0.42');
+        expect(cli.parseLogTimeArgs(['3:00']).hours).to.equal('3.00');
+      });
+    });
+
+    describe('activity_id', () => {
+      it('should use default (iss) activity_id', () => {
+        expect(cli.parseLogTimeArgs([]).activity_id).to.equal(33);
+      });
+
+      it('should be the id of the given activity-code', () => {
+        expect(cli.parseLogTimeArgs(['iss']).activity_id).to.equal(33);
+        expect(cli.parseLogTimeArgs(['asd']).activity_id).to.equal(12);
+        expect(() => cli.parseLogTimeArgs(['tst'])).to.throw('unknown activity tst');
       });
     });
   });
