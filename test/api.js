@@ -78,12 +78,13 @@ describe('Api', () => {
 
     it('should call sendRequest()', () => {
       api.sendRequest.returns('hier');
-      expect(api.logTime(17, 3.45, 678)).to.equal('hier');
+      expect(api.logTime(17, 3.45, 678, '2018-02-14')).to.equal('hier');
       const daten = {
         time_entry: {
           issue_id: 17,
           hours: 3.45,
-          activity_id: 678
+          activity_id: 678,
+          spent_on: '2018-02-14'
         }
       };
       expect(api.sendRequest).to.have.been.calledWith('POST', '/time_entries.json', daten);
