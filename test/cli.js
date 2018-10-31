@@ -368,6 +368,23 @@ describe('Cli', () => {
         expect(() => cli.parseLogTimeArgs(['tst', ':00'])).to.throw('unknown activity tst');
       });
     });
+
+    describe('combined parameters', () => {
+      const timedef = {
+        spent_on: '2018-10-20',
+        hours: '2.75',
+        activity_id: 33,
+        issue_id: '3344'
+      };
+
+      it('should identify all parameter', () => {
+        expect(cli.parseLogTimeArgs(['iss', '2:45', '2018-10-20', '3344'])).to.eql(timedef);
+        expect(cli.parseLogTimeArgs(['2:45', 'iss', '2018-10-20', '3344'])).to.eql(timedef);
+        expect(cli.parseLogTimeArgs(['3344', '2:45', 'iss', '2018-10-20'])).to.eql(timedef);
+        expect(cli.parseLogTimeArgs(['iss', '3344', '2:45', '2018-10-20'])).to.eql(timedef);
+        expect(cli.parseLogTimeArgs(['2018-10-20', '3344', '2:45', 'iss'])).to.eql(timedef);
+      });
+    });
   });
 
   describe('takeOver()', () => {
