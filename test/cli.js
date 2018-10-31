@@ -325,6 +325,12 @@ describe('Cli', () => {
       });
     });
 
+    describe('comments', () => {
+      it('should take everithign else as comments', () => {
+        expect(cli.parseLogTimeArgs(['1:00', 'Das ist ein Kommentar']).comments).to.equal('Das ist ein Kommentar');
+      });
+    });
+
     describe('spent_on', () => {
       it('should be today', () => {
         const now = new Date().toISOString().split('T')[0];
@@ -383,6 +389,20 @@ describe('Cli', () => {
         expect(cli.parseLogTimeArgs(['3344', '2:45', 'iss', '2018-10-20'])).to.eql(timedef);
         expect(cli.parseLogTimeArgs(['iss', '3344', '2:45', '2018-10-20'])).to.eql(timedef);
         expect(cli.parseLogTimeArgs(['2018-10-20', '3344', '2:45', 'iss'])).to.eql(timedef);
+        expect(cli.parseLogTimeArgs(['Kommentar', '2018-10-20', '3344', '2:45', 'iss'])).to.eql({
+          spent_on: '2018-10-20',
+          hours: '2.75',
+          activity_id: 33,
+          issue_id: '3344',
+          comments: 'Kommentar'
+        });
+        expect(cli.parseLogTimeArgs(['2018-10-20', '3344', 'Kommentar hier', '2:45', 'iss'])).to.eql({
+          spent_on: '2018-10-20',
+          hours: '2.75',
+          activity_id: 33,
+          issue_id: '3344',
+          comments: 'Kommentar hier'
+        });
       });
     });
   });
