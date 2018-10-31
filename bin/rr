@@ -51,15 +51,9 @@ switch (cmd) {
   case 's':
     cli.showTicket(argv[0]);
     break;
-  // log time for
-  // - issue #1234
-  // - 2:30 hours
-  // - on 30. Oct 2018
-  // - activity iss
-  // rr lt 1234 2:30 2018-10-30 iss
   case 'lt':
   case 'logTime':
-    cli.logTime(argv);
+    cli.logTimeCli(argv);
     break;
   case 'post-checkout':
     cli.post_checkout(argv[0], argv[1], argv[2]);
