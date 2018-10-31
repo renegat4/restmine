@@ -290,7 +290,7 @@ describe('Cli', () => {
 
   });
 
-  describe.only('parseLogTimeArgs()', () => {
+  describe('parseLogTimeArgs()', () => {
     let cli;
 
     const config = {
@@ -385,6 +385,52 @@ describe('Cli', () => {
         expect(cli.parseLogTimeArgs(['2018-10-20', '3344', '2:45', 'iss'])).to.eql(timedef);
       });
     });
+  });
+
+  describe('logTimeCli()', () => {
+    let cli;
+
+    const timeDef = {
+      spent_on: '2018-01-02',
+      hours: '3:15',
+      issue_id: '4536',
+      activity_id: 12
+    };
+
+    const config = {
+      user_id: 2,
+      category_id: 3,
+      edit_id: 4,
+      activity: {
+        asd: 12,
+        iss: 33
+      }
+    };
+
+    const api = {};
+    const git = {};
+    const fs = {};
+
+    before(() => {
+      cli = new Cli(api, git, config, fs);
+      sinon.stub(cli, 'parseLogTimeArgs');
+      sinon.stub(cli, 'logTime');
+    });
+
+    beforeEach(() => {
+      cli.parseLogTimeArgs.reset();
+      cli.parseLogTimeArgs.returns(timeDef);
+      cli.logTimeCli('hier');
+    });
+
+    it('should call parseLogTimeArgs()', () => {
+      expect(cli.parseLogTimeArgs).to.have.been.calledWith('hier');
+    });
+
+    it('should call api.logTime()', () => {
+      expect(cli.logTime).to.have.been.calledWith('4536', '3:15', 12, '2018-01-02');
+    });
+
   });
 
   describe('takeOver()', () => {
