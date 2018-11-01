@@ -304,7 +304,9 @@ describe('Cli', () => {
     };
 
     const api = {};
-    const git = {};
+    const git = {
+      currentBranchName: () => 'iss5677'
+    };
     const fs = {};
 
     before(() => {
@@ -322,6 +324,7 @@ describe('Cli', () => {
         expect(cli.parseLogTimeArgs(['456', '0:30', '1234']).issue_id).to.equal('1234');
         expect(cli.parseLogTimeArgs(['456', '0:30']).issue_id).to.equal('456');
         expect(cli.parseLogTimeArgs(['45', '0:30']).issue_id).to.equal('45');
+        expect(cli.parseLogTimeArgs(['0:30']).issue_id).to.equal('5677');
       });
     });
 
@@ -402,6 +405,12 @@ describe('Cli', () => {
           activity_id: 33,
           issue_id: '3344',
           comments: 'Kommentar hier'
+        });
+        expect(cli.parseLogTimeArgs(['iss', '2:45', '2018-10-20'])).to.eql({
+          spent_on: '2018-10-20',
+          hours: '2.75',
+          activity_id: 33,
+          issue_id: '5677'
         });
       });
     });
