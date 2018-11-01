@@ -290,7 +290,7 @@ describe('Cli', () => {
 
   });
 
-  describe.only('parseLogTimeArgs()', () => {
+  describe('parseLogTimeArgs()', () => {
     let cli;
 
     const config = {
