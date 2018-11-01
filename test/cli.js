@@ -329,7 +329,7 @@ describe('Cli', () => {
     });
 
     describe('comments', () => {
-      it('should take everithign else as comments', () => {
+      it('should take everything else as comments', () => {
         expect(cli.parseLogTimeArgs(['1:00', 'Das ist ein Kommentar']).comments).to.equal('Das ist ein Kommentar');
       });
     });
