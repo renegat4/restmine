@@ -1,6 +1,6 @@
 {
   "name": "restmine",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "link git with redmine to automatically add refs to commits, log time on tickets...",
   "keywords": [
     "git",
