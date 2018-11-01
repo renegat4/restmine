@@ -290,7 +290,7 @@ describe('Cli', () => {
 
   });
 
-  describe('parseLogTimeArgs()', () => {
+  describe.only('parseLogTimeArgs()', () => {
     let cli;
 
     const config = {
@@ -305,112 +305,141 @@ describe('Cli', () => {
 
     const api = {};
     const git = {
-      currentBranchName: () => 'iss5677'
+      currentBranchName: () => {}
     };
     const fs = {};
 
     before(() => {
       cli = new Cli(api, git, config, fs);
+      sinon.stub(git, 'currentBranchName');
     });
 
-    it('should return a timeDef-object', () => {
-      const timeDef = cli.parseLogTimeArgs(['4:00']);
-      expect(timeDef).to.have.all.keys('issue_id', 'hours', 'activity_id', 'spent_on');
-    });
-
-    describe('issue_id', () => {
-      it('should be the given id', () => {
-        expect(cli.parseLogTimeArgs(['0:30', '1234']).issue_id).to.equal('1234');
-        expect(cli.parseLogTimeArgs(['456', '0:30', '1234']).issue_id).to.equal('1234');
-        expect(cli.parseLogTimeArgs(['456', '0:30']).issue_id).to.equal('456');
-        expect(cli.parseLogTimeArgs(['45', '0:30']).issue_id).to.equal('45');
-        expect(cli.parseLogTimeArgs(['0:30']).issue_id).to.equal('5677');
-      });
-    });
-
-    describe('comments', () => {
-      it('should take everything else as comments', () => {
-        expect(cli.parseLogTimeArgs(['1:00', 'Das ist ein Kommentar']).comments).to.equal('Das ist ein Kommentar');
-      });
-    });
-
-    describe('spent_on', () => {
-      it('should be today', () => {
-        const now = new Date().toISOString().split('T')[0];
-        const timeDef = cli.parseLogTimeArgs(['3:00']);
-        expect(timeDef.spent_on).to.equal(now);
+    describe('not on an issue-branch', () => {
+      beforeEach(() => {
+        git.currentBranchName.reset();
+        git.currentBranchName.returns('master');
       });
 
-      it('should be the given date', () => {
-        expect(cli.parseLogTimeArgs(['2018-10-20', '2:30']).spent_on).to.equal('2018-10-20');
-        expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', 'v', '2:30']).spent_on).to.equal('2018-10-20');
-        expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', '2018-10-21', '2:30']).spent_on).to.equal('2018-10-21');
-        expect(cli.parseLogTimeArgs(['2018-10-21', 'asd', '2:30']).spent_on).to.equal('2018-10-21');
-        expect(cli.parseLogTimeArgs(['2018-10-21', '2018', '2:30']).spent_on).to.equal('2018-10-21');
-        expect(cli.parseLogTimeArgs(['2018-10-21', '2018-10-2', '2:30']).spent_on).to.equal('2018-10-21');
-      });
-    });
-
-    describe('hours', () => {
-      it('should be the given hours in decimal', () => {
-        expect(cli.parseLogTimeArgs(['2:30']).hours).to.equal('2.50');
-        expect(cli.parseLogTimeArgs([':30']).hours).to.equal('0.50');
-        expect(cli.parseLogTimeArgs([':25']).hours).to.equal('0.42');
-        expect(cli.parseLogTimeArgs(['3:00']).hours).to.equal('3.00');
-        expect(() => cli.parseLogTimeArgs([])).to.throw('no time given');
-        expect(() => cli.parseLogTimeArgs([':00'])).to.throw('no time given?');
-        expect(() => cli.parseLogTimeArgs([':0'])).to.throw('no time given?');
-        expect(() => cli.parseLogTimeArgs(['0:00'])).to.throw('no time given?');
-        expect(() => cli.parseLogTimeArgs(['100:00'])).to.throw('no time given?');
-        expect(() => cli.parseLogTimeArgs(['10:200'])).to.throw('no time given?');
-      });
-    });
-
-    describe('activity_id', () => {
-      it('should use default (iss) activity_id', () => {
-        expect(cli.parseLogTimeArgs(['1:00']).activity_id).to.equal(33);
-      });
-
-      it('should be the id of the given activity-code', () => {
-        expect(cli.parseLogTimeArgs(['iss', '1:00']).activity_id).to.equal(33);
-        expect(cli.parseLogTimeArgs(['asd', '1:00']).activity_id).to.equal(12);
-        expect(() => cli.parseLogTimeArgs(['tst', ':00'])).to.throw('unknown activity tst');
-      });
-    });
-
-    describe('combined parameters', () => {
-      const timedef = {
-        spent_on: '2018-10-20',
-        hours: '2.75',
-        activity_id: 33,
-        issue_id: '3344'
-      };
-
-      it('should identify all parameter', () => {
-        expect(cli.parseLogTimeArgs(['iss', '2:45', '2018-10-20', '3344'])).to.eql(timedef);
-        expect(cli.parseLogTimeArgs(['2:45', 'iss', '2018-10-20', '3344'])).to.eql(timedef);
-        expect(cli.parseLogTimeArgs(['3344', '2:45', 'iss', '2018-10-20'])).to.eql(timedef);
-        expect(cli.parseLogTimeArgs(['iss', '3344', '2:45', '2018-10-20'])).to.eql(timedef);
-        expect(cli.parseLogTimeArgs(['2018-10-20', '3344', '2:45', 'iss'])).to.eql(timedef);
-        expect(cli.parseLogTimeArgs(['Kommentar', '2018-10-20', '3344', '2:45', 'iss'])).to.eql({
-          spent_on: '2018-10-20',
-          hours: '2.75',
-          activity_id: 33,
-          issue_id: '3344',
-          comments: 'Kommentar'
+      describe('issue_id', () => {
+        it('should be the given id', () => {
+          expect(cli.parseLogTimeArgs(['0:30', '1234']).issue_id).to.equal('1234');
+          expect(cli.parseLogTimeArgs(['456', '0:30', '1234']).issue_id).to.equal('1234');
+          expect(cli.parseLogTimeArgs(['456', '0:30']).issue_id).to.equal('456');
+          expect(cli.parseLogTimeArgs(['45', '0:30']).issue_id).to.equal('45');
         });
-        expect(cli.parseLogTimeArgs(['2018-10-20', '3344', 'Kommentar hier', '2:45', 'iss'])).to.eql({
-          spent_on: '2018-10-20',
-          hours: '2.75',
-          activity_id: 33,
-          issue_id: '3344',
-          comments: 'Kommentar hier'
+
+        it('should throw', () => {
+          expect(() => cli.parseLogTimeArgs(['0:30'])).to.throw('not on a iss-branch and no issue-id given?');
         });
-        expect(cli.parseLogTimeArgs(['iss', '2:45', '2018-10-20'])).to.eql({
+      });
+    });
+
+    describe('on an issue-branch', () => {
+
+      beforeEach(() => {
+        git.currentBranchName.reset();
+        git.currentBranchName.returns('iss5677');
+      });
+
+      it('should return a timeDef-object', () => {
+        const timeDef = cli.parseLogTimeArgs(['4:00']);
+        expect(timeDef).to.have.all.keys('issue_id', 'hours', 'activity_id', 'spent_on');
+      });
+
+      describe('issue_id', () => {
+        it('should be the given id', () => {
+          expect(cli.parseLogTimeArgs(['0:30', '1234']).issue_id).to.equal('1234');
+          expect(cli.parseLogTimeArgs(['456', '0:30', '1234']).issue_id).to.equal('1234');
+          expect(cli.parseLogTimeArgs(['456', '0:30']).issue_id).to.equal('456');
+          expect(cli.parseLogTimeArgs(['45', '0:30']).issue_id).to.equal('45');
+          expect(cli.parseLogTimeArgs(['0:30']).issue_id).to.equal('5677');
+        });
+      });
+
+      describe('comments', () => {
+        it('should take everything else as comments', () => {
+          expect(cli.parseLogTimeArgs(['1:00', 'Das ist ein Kommentar']).comments).to.equal('Das ist ein Kommentar');
+        });
+      });
+
+      describe('spent_on', () => {
+        it('should be today', () => {
+          const now = new Date().toISOString().split('T')[0];
+          const timeDef = cli.parseLogTimeArgs(['3:00']);
+          expect(timeDef.spent_on).to.equal(now);
+        });
+
+        it('should be the given date', () => {
+          expect(cli.parseLogTimeArgs(['2018-10-20', '2:30']).spent_on).to.equal('2018-10-20');
+          expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', 'v', '2:30']).spent_on).to.equal('2018-10-20');
+          expect(cli.parseLogTimeArgs(['a', 'b', '2018-10-20', '2018-10-21', '2:30']).spent_on).to.equal('2018-10-21');
+          expect(cli.parseLogTimeArgs(['2018-10-21', 'asd', '2:30']).spent_on).to.equal('2018-10-21');
+          expect(cli.parseLogTimeArgs(['2018-10-21', '2018', '2:30']).spent_on).to.equal('2018-10-21');
+          expect(cli.parseLogTimeArgs(['2018-10-21', '2018-10-2', '2:30']).spent_on).to.equal('2018-10-21');
+        });
+      });
+
+      describe('hours', () => {
+        it('should be the given hours in decimal', () => {
+          expect(cli.parseLogTimeArgs(['2:30']).hours).to.equal('2.50');
+          expect(cli.parseLogTimeArgs([':30']).hours).to.equal('0.50');
+          expect(cli.parseLogTimeArgs([':25']).hours).to.equal('0.42');
+          expect(cli.parseLogTimeArgs(['3:00']).hours).to.equal('3.00');
+          expect(() => cli.parseLogTimeArgs([])).to.throw('no time given');
+          expect(() => cli.parseLogTimeArgs([':00'])).to.throw('no time given?');
+          expect(() => cli.parseLogTimeArgs([':0'])).to.throw('no time given?');
+          expect(() => cli.parseLogTimeArgs(['0:00'])).to.throw('no time given?');
+          expect(() => cli.parseLogTimeArgs(['100:00'])).to.throw('no time given?');
+          expect(() => cli.parseLogTimeArgs(['10:200'])).to.throw('no time given?');
+        });
+      });
+
+      describe('activity_id', () => {
+        it('should use default (iss) activity_id', () => {
+          expect(cli.parseLogTimeArgs(['1:00']).activity_id).to.equal(33);
+        });
+
+        it('should be the id of the given activity-code', () => {
+          expect(cli.parseLogTimeArgs(['iss', '1:00']).activity_id).to.equal(33);
+          expect(cli.parseLogTimeArgs(['asd', '1:00']).activity_id).to.equal(12);
+          expect(() => cli.parseLogTimeArgs(['tst', ':00'])).to.throw('unknown activity tst');
+        });
+      });
+
+      describe('combined parameters', () => {
+        const timedef = {
           spent_on: '2018-10-20',
           hours: '2.75',
           activity_id: 33,
-          issue_id: '5677'
+          issue_id: '3344'
+        };
+
+        it('should identify all parameter', () => {
+          expect(cli.parseLogTimeArgs(['iss', '2:45', '2018-10-20', '3344'])).to.eql(timedef);
+          expect(cli.parseLogTimeArgs(['2:45', 'iss', '2018-10-20', '3344'])).to.eql(timedef);
+          expect(cli.parseLogTimeArgs(['3344', '2:45', 'iss', '2018-10-20'])).to.eql(timedef);
+          expect(cli.parseLogTimeArgs(['iss', '3344', '2:45', '2018-10-20'])).to.eql(timedef);
+          expect(cli.parseLogTimeArgs(['2018-10-20', '3344', '2:45', 'iss'])).to.eql(timedef);
+          expect(cli.parseLogTimeArgs(['Kommentar', '2018-10-20', '3344', '2:45', 'iss'])).to.eql({
+            spent_on: '2018-10-20',
+            hours: '2.75',
+            activity_id: 33,
+            issue_id: '3344',
+            comments: 'Kommentar'
+          });
+          expect(cli.parseLogTimeArgs(['2018-10-20', '3344', 'Kommentar hier', '2:45', 'iss'])).to.eql({
+            spent_on: '2018-10-20',
+            hours: '2.75',
+            activity_id: 33,
+            issue_id: '3344',
+            comments: 'Kommentar hier'
+          });
+          expect(cli.parseLogTimeArgs(['iss', '2:45', '2018-10-20'])).to.eql({
+            spent_on: '2018-10-20',
+            hours: '2.75',
+            activity_id: 33,
+            issue_id: '5677'
+          });
         });
       });
     });
