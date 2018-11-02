@@ -56,12 +56,19 @@ restmines configuration.
 
 If `category_id` is undefined restmine will not touch the issue-category.
 
-You can find the `category_id` and `activity ids` by examining
-the redmine website. Or after authentication is configured by running the
-commands:
+To find the `project_id`, `category_id` and `activity-ids` first configure
+authentication (`host`, `https`, `key`), then use following commands:
 
-    $ rr statuses
+    $ rr projects
     $ rr categories
+    $ rr activities
+
+`edit_id` is the status-id of issues which are assigned. The status will be set
+on an issue when a corresponding branch with iss-prefix gets checked out. To
+find the id use:
+
+    $ rr status
+
 
 ## issue-branches
 
@@ -73,7 +80,7 @@ Issue-branches need to be named like (RegExp):
 
 This is three characters followed by a number.
 
-The characters correspond to the configured `..._activityid`
+The characters correspond to the configured `activity.`
 and the number is the issue id.
 
 ## show an issue
