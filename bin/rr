@@ -36,6 +36,7 @@ const fs = { appendFileSync: appendFileSync };
 const cli = new Cli(api, git, config, fs);
 
 switch (cmd) {
+  case 'status':
   case 'statuses':
     cli.getIssueStatuses();
     break;
