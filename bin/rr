@@ -40,6 +40,9 @@ switch (cmd) {
   case 'statuses':
     cli.getIssueStatuses();
     break;
+  case 'projects':
+    cli.getProjects();
+    break;
   case 'categories':
     cli.getIssueCategories();
     break;
