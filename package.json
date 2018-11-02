@@ -4,7 +4,8 @@
   "description": "link git with redmine to automatically add refs to commits, log time on tickets...",
   "keywords": [
     "git",
-    "redmine"
+    "redmine",
+    "rest"
   ],
   "main": "index.js",
   "directories": {
