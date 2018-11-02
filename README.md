@@ -85,16 +85,32 @@ and the number is the issue id.
 
 ## show an issue
 
-restmine can show the current issue:
+restmine can show the current issue (if on an issue-branch):
 
     $ rr
 
 Or an arbitrary one:
 
-    $ rr show 1234
+    $ rr (showTicket|show|s) 1234
 
 ## show assigned issues
 
-restmine can list all open issues:
+restmine can list all open issues (in the configured project):
 
-    $ rr issues
+    $ rr (issues|i)
+
+## Time tracking
+
+restmine can be used to log time on an issue.
+
+    $ rr (logTime|lt) 3345 2:30 2018-10-20 iss "this is a comment"
+
+Order of parameters doesn't matter.
+
+`iss` is the activity under which the time should be logged and corresponds to
+the configured activity in the config-file. If left out, `iss` is the default.
+
+If no date is given, it defaults to today.
+
+If the user is on an issue-branch like org3345 and no issue-id is given
+on the command line, the time will be logged on that issue (3345).
