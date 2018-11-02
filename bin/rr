@@ -53,6 +53,9 @@ switch (cmd) {
   case 'i':
     cli.getIssues();
     break;
+  case 'queries':
+    cli.getQueries();
+    break;
   case 'showTicket':
   case 'show':
   case 's':
