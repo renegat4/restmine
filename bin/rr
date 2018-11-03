@@ -19,13 +19,13 @@ if (!git.isRepo()) {
 const execName = basename(process.argv[1]);
 const cmd = execName == 'rr' ? argv.shift() : execName;
 
-if (cmd === 'setup') {
+if (cmd === 'setup' || cmd === 'init') {
   require('../lib/setup')();
   process.exit(1);
 }
 
 if (!existsSync('.restmine.json')) {
-  console.log('run `rr setup` first');
+  console.log('run `rr init` first');
   process.exit(1);
 }
 

@@ -28,7 +28,7 @@ are free to configure other prefixes with individual activity ids, but only
 
 ## setup
 
-    $ rr setup
+    $ rr init
 
 This will install the required hooks (commit-msg, post-checkout). Existing
 hooks will be renamed. In windows the user needs the
