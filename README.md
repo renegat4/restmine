@@ -53,7 +53,7 @@ Besides that the configuration file `.restmine.json` will be created.
   }
 ```
 
-`key`: the users redmine-API-key.
+`key`: the users [redmine-API-key](http://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication).
 `user_id`: the users redmine user ID.
 `project_id`: the ID of the corresponding project.
 `edit_id`: the ID of 'assigned' status.
