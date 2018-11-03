@@ -56,6 +56,10 @@ switch (cmd) {
   case 'queries':
     cli.getQueries();
     break;
+  case 'query':
+  case 'q':
+    cli.runQuerie(argv[0]);
+    break;
   case 'showTicket':
   case 'show':
   case 's':

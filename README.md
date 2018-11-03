@@ -120,3 +120,26 @@ If no date is given, it defaults to today.
 
 If the user is on an issue-branch like org3345 and no issue-id is given
 on the command line, the time will be logged on that issue (3345).
+
+## Queries
+
+restmine can run suer defined redmine-queries.
+First configure a query in redmine as usual and list available query
+with restmine to get the ID:
+
+    $ rr queries
+
+Then add a `queries`-section to the config-file for the queries with a
+identifying name an their ID:
+
+``` json
+  {
+    "queries": {
+      "query1": 44
+    }
+  }
+```
+
+Run the query:
+
+    $ rr (query|q) query1
