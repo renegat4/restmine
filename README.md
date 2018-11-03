@@ -33,7 +33,7 @@ are free to configure other prefixes with individual activity ids, but only
 This will install the required hooks (commit-msg, post-checkout). Existing
 hooks will be renamed. In windows the user needs the
 `SeCreateSymbolicLinkPrivilege` privilege. Or run the command as administrator.
-See: (https://ember-cli.com/user-guide/#enabling-symlinks)
+See: [enabling-symlinks](https://ember-cli.com/user-guide/#enabling-symlinks)
 
 Besides that the configuration file `.restmine.json` will be created.
 
