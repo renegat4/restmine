@@ -35,23 +35,29 @@ hooks will be renamed. In windows the user needs the
 `SeCreateSymbolicLinkPrivilege` privilege. Or run the command as administrator.
 See: (https://ember-cli.com/user-guide/#enabling-symlinks)
 
-Besides that an `.restmine.json`-file will be created. This file contains
-restmines configuration.
+Besides that the configuration file `.restmine.json` will be created.
 
-    {
-      "host": "hostname where redmine is installed (redmine.example.com)",
-      "https": boolean (true ->use https),
-      "key": the users API-key,
-      "user_id": the users id in redmine,
-      "project_id": the project id in redmine,
-      "edit_id": the id of 'assigned' status,
-      "category_id": the category id which will be set on take-over,
-      "activity": {
-        "iss": the activity id for time logged on issues,
-        "org": activity id for time logged on 'orga'-issues
-      }
+``` json
+  {
+    "host": "redmine.example.com",
+    "https": true,
+    "key": "xxxxxxxxxxxxxxxxxxxxxx",
+    "user_id": 0,
+    "project_id": 0,
+    "edit_id": 0,
+    "category_id": 0,
+    "activity": {
+      "iss": 0,
+      "org": 0
     }
+  }
+```
 
+`key`: the users redmine-API-key.
+`user_id`: the users redmine user ID.
+`project_id`: the ID of the corresponding project.
+`edit_id`: the ID of 'assigned' status.
+`category_id`: the category ID which will be set in take-over
 `activity.iss` is required. `activity.org` is an example.
 
 If `category_id` is undefined restmine will not touch the issue-category.
