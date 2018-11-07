@@ -290,6 +290,18 @@ describe('Cli', () => {
 
   });
 
+  describe('pad()', () => {
+    const cli = new Cli({}, {}, {}, {});
+
+    it('should fill the string with spaces', () => {
+      expect(cli.pad('Hallo', 10)).to.eql('Hallo     ');
+      expect(cli.pad('Hier', 4)).to.eql('Hier');
+      expect(cli.pad('Hier', 3)).to.eql('Hie');
+      expect(cli.pad('Hier ist ein Test', 4)).to.eql('Hier');
+    });
+
+  });
+
   describe('parseLogTimeArgs()', () => {
     let cli;
 
