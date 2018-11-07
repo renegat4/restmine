@@ -290,6 +290,28 @@ describe('Cli', () => {
 
   });
 
+  describe('tableSpecs()', () => {
+    const cli = new Cli({}, {}, {}, {});
+
+    const testissues = [
+      { id: 1234, priority: { name: 'Hoch' }, tracker: { name: 'Fehler' }, status: { name: 'In Bearb.' }, subject: 'Das ist ein Test' },
+      { id: 13234, priority: { name: 'sehr Hoch' }, tracker: { name: 'schwerer Fehler' }, status: { name: 'offen' }, subject: 'Alles kaputt' }
+    ];
+
+    it('should return an array', () => {
+      expect(cli.tableSpecs([])).to.be.an('array');
+    });
+
+    it('should return an array with column specs', () => {
+      const result = cli.tableSpecs(testissues);
+      expect(result[0]).to.eql(5);  // id
+      expect(result[1]).to.eql(9);  // priority
+      expect(result[2]).to.eql(15); // tracker
+      expect(result[3]).to.eql(9);  // status
+      expect(result[4]).to.eql(16); // subject
+    });
+  });
+
   describe('pad()', () => {
     const cli = new Cli({}, {}, {}, {});
 
