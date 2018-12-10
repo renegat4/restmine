@@ -139,7 +139,7 @@ describe('Cli', () => {
       cli.getCheckoutTime('hier');
       expect(git.reflog).to.have.been.calledWith('to hier');
     });
-    
+
     it('should return ISO 8601', () => {
       expect(cli.getCheckoutTime('test')).to.equal('2018-03-28T21:01:42+02:00');
     });
@@ -245,7 +245,7 @@ describe('Cli', () => {
     let cli;
 
     const git = {
-      currentBranchName: () => {} 
+      currentBranchName: () => {}
     };
 
     before(() => {
