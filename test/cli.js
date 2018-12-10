@@ -348,7 +348,7 @@ describe('Cli', () => {
       sinon.stub(git, 'currentBranchName');
     });
 
-    describe('not on an issue-branch', () => {
+    describe.only('not on an issue-branch', () => {
       beforeEach(() => {
         git.currentBranchName.reset();
         git.currentBranchName.returns('master');
@@ -360,6 +360,9 @@ describe('Cli', () => {
           expect(cli.parseLogTimeArgs(['456', '0:30', '1234']).issue_id).to.equal('1234');
           expect(cli.parseLogTimeArgs(['456', '0:30']).issue_id).to.equal('456');
           expect(cli.parseLogTimeArgs(['45', '0:30']).issue_id).to.equal('45');
+          expect(cli.parseLogTimeArgs(['iss45', '0:30']).issue_id).to.equal('45');
+          expect(cli.parseLogTimeArgs(['iss45', '0:30']).activity_id).to.equal(33);
+          expect(cli.parseLogTimeArgs(['asd45', '0:30']).activity_id).to.equal(12);
         });
 
         it('should throw', () => {
