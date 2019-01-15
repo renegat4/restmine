@@ -195,7 +195,7 @@ describe('Cli', () => {
   describe('leaveIssueBranch()', () => {
     let cli;
     const branchName = 'test';
-    const env = Object.assign({}, process.env);
+    const env = Object.assign({ autoLogTime: true }, process.env);
     const issue = {
       id: 22
     };
@@ -348,7 +348,7 @@ describe('Cli', () => {
       sinon.stub(git, 'currentBranchName');
     });
 
-    describe.only('not on an issue-branch', () => {
+    describe('not on an issue-branch', () => {
       beforeEach(() => {
         git.currentBranchName.reset();
         git.currentBranchName.returns('master');
