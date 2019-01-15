@@ -32,6 +32,7 @@ if (!existsSync('.restmine.json')) {
 const config = JSON.parse(readFileSync(join(git.getTopLevel(), '.restmine.json'), 'utf-8'));
 config.autoLogTime = config.autoLogTime === undefined ? true : config.autoLogTime;
 config.columns = process.stdout.columns - 2;
+config.isTTY = process.stdout.isTTY;
 
 const api = new Api(config);
 const fs = { appendFileSync: appendFileSync };
