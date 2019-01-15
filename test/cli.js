@@ -192,6 +192,30 @@ describe('Cli', () => {
     });
   });
 
+  describe('formatProjects()', () => {
+    let cli;
+    const branchName = 'test';
+    const env = Object.assign({ autoLogTime: true, columns: 59 }, process.env);
+    const issue = {
+      id: 22
+    };
+
+    before(() => {
+      cli = new Cli({}, {}, env, 1);
+    });
+
+    it('should return a formated List of projects', () => {
+      const projects = [
+        { id: '1', name: 'Test', description: 'Das Test-Projekt' },
+        { id: '12345', name: 'Zweites Projekt', description: 'Eine etwas längere Beschreibung die abgeschnitten wird.' }
+      ];
+      const result = cli.formatProjects(projects);
+
+      expect(result).to.eql('      1 │ Test            │ Das Test-Projekt\n  12345 │ Zweites Projekt │ Eine etwas längere Beschreibung');
+    });
+
+  });
+
   describe('leaveIssueBranch()', () => {
     let cli;
     const branchName = 'test';
