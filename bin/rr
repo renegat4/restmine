@@ -19,66 +19,74 @@ if (!git.isRepo()) {
 const execName = basename(process.argv[1]);
 const cmd = execName == 'rr' ? argv.shift() : execName;
 
+async function dosetup() {
+  const { setup, queryUser, writeConfig } = require('../lib/setup');
+  setup();
+  const answers = await queryUser();
+  await writeConfig(answers);
+  process.exit(0);
+}
+
 if (cmd === 'setup' || cmd === 'init') {
-  require('../lib/setup')();
-  process.exit(1);
-}
+  dosetup()
+} else {
 
-if (!existsSync('.restmine.json')) {
-  console.log('run `rr init` first');
-  process.exit(1);
-}
+  if (!existsSync('.restmine.json')) {
+    console.log('run `rr init` first');
+    process.exit(1);
+  }
 
-const config = JSON.parse(readFileSync(join(git.getTopLevel(), '.restmine.json'), 'utf-8'));
-config.autoLogTime = config.autoLogTime === undefined ? true : config.autoLogTime;
-config.columns = process.stdout.columns - 2;
-config.isTTY = process.stdout.isTTY;
+  const config = JSON.parse(readFileSync(join(git.getTopLevel(), '.restmine.json'), 'utf-8'));
+  config.autoLogTime = config.autoLogTime === undefined ? true : config.autoLogTime;
+  config.columns = process.stdout.columns - 2;
+  config.isTTY = process.stdout.isTTY;
 
-const api = new Api(config);
-const fs = { appendFileSync: appendFileSync };
-const cli = new Cli(api, git, config, fs);
+  const api = new Api(config);
+  const fs = { appendFileSync: appendFileSync };
+  const cli = new Cli(api, git, config, fs);
 
-switch (cmd) {
-  case 'status':
-  case 'statuses':
-    cli.getIssueStatuses();
-    break;
-  case 'projects':
-    cli.getProjects();
-    break;
-  case 'categories':
-    cli.getIssueCategories();
-    break;
-  case 'activities':
-    cli.getActivities();
-    break;
-  case 'issues':
-  case 'i':
-    cli.getIssues();
-    break;
-  case 'queries':
-    cli.getQueries();
-    break;
-  case 'query':
-  case 'q':
-    cli.runQuerie(argv[0]);
-    break;
-  case 'showTicket':
-  case 'show':
-  case 's':
-    cli.showTicket(argv[0]);
-    break;
-  case 'lt':
-  case 'logTime':
-    cli.logTimeCli(argv);
-    break;
-  case 'post-checkout':
-    cli.post_checkout(argv[0], argv[1], argv[2]);
-    break;
-  case 'commit-msg':
-    cli.commit_msg(argv[0]);
-    break;
-  default:
-    cli.info();
-    break;
+  switch (cmd) {
+    case 'status':
+    case 'statuses':
+      cli.getIssueStatuses();
+      break;
+    case 'projects':
+      cli.getProjects();
+      break;
+    case 'categories':
+      cli.getIssueCategories();
+      break;
+    case 'activities':
+      cli.getActivities();
+      break;
+    case 'issues':
+    case 'i':
+      cli.getIssues();
+      break;
+    case 'queries':
+      cli.getQueries();
+      break;
+    case 'query':
+    case 'q':
+      cli.runQuerie(argv[0]);
+      break;
+    case 'showTicket':
+    case 'show':
+    case 's':
+      cli.showTicket(argv[0]);
+      break;
+    case 'lt':
+    case 'logTime':
+      cli.logTimeCli(argv);
+      break;
+    case 'post-checkout':
+      cli.post_checkout(argv[0], argv[1], argv[2]);
+      break;
+    case 'commit-msg':
+      cli.commit_msg(argv[0]);
+      break;
+    default:
+      cli.info();
+      break;
+  }
 }
