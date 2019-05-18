@@ -20,10 +20,20 @@ const execName = basename(process.argv[1]);
 const cmd = execName == 'rr' ? argv.shift() : execName;
 
 async function dosetup() {
-  const { setup, queryUser, writeConfig } = require('../lib/setup');
-  setup();
-  const answers = await queryUser();
-  writeConfig(answers);
+  const { setup, queryUser, addActivity, getConfigFrom, writeConfig } = require('../lib/setup');
+  if (!existsSync('.restmine.json')) {
+    setup();
+    const answers = await queryUser();
+    writeConfig(getConfigFrom(answers));
+  } else {
+    console.log(`.restmine.json schon vorhanden...`);
+    const answers = await addActivity();
+    if (answers.activity_id) {
+      const config = JSON.parse(readFileSync(join(git.getTopLevel(), '.restmine.json'), 'utf-8'));
+      config.activity[answers.prefix] = answers.activity_id;
+      writeConfig(config);
+    }
+  }
   process.exit(0);
 }
 
