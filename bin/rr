@@ -23,7 +23,7 @@ async function dosetup() {
   const { setup, queryUser, writeConfig } = require('../lib/setup');
   setup();
   const answers = await queryUser();
-  await writeConfig(answers);
+  writeConfig(answers);
   process.exit(0);
 }
 
