@@ -89,9 +89,10 @@ restmine will only become active when it recognises an issue-branch.
 
 Issue-branches need to be named like (RegExp):
 
-    ^([a-zA-Z]{3})(\d+)$
+    ^([a-zA-Z]{3})(\d+)
 
-This is three characters followed by a number.
+This is three characters followed by a number. Followed by more text, if you
+dont like branches like `iss4455`. (Remember: no spaces inside branch names.)
 
 The characters correspond to the configured `activity.`
 and the number is the issue id.
