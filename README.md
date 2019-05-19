@@ -8,7 +8,7 @@
 
 ## install
 
-```
+```sh
 $ npm install -g restmine
 ```
 
