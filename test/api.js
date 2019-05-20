@@ -85,7 +85,7 @@ describe('Api', () => {
     before(() => {
       api = new Api({ https: true });
     });
-    
+
     it('should be a function', () => {
       expect(api.sendRequest).to.be.a('function');
     });
