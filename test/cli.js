@@ -618,9 +618,9 @@ describe('Cli', () => {
       ];
       const specs = [ 3, 5, 6, 6 ];
       let result = cli.tabular(issues[0], specs);
-      expect(result).to.equal('15  │ prio1 │ trac1  │ stat16 │ \u001b[32mDas Subject\u001b[39m');
+      expect(result).to.equal('15  | prio1 | trac1  | stat16 | \u001b[32mDas Subject\u001b[39m');
       result = cli.tabular(issues[1], specs);
-      expect(result).to.equal('315 │ prio2 │ trac51 │ stat1  │ \u001b[32mDas andere Subject\u001b[39m');
+      expect(result).to.equal('315 | prio2 | trac51 | stat1  | \u001b[32mDas andere Subject\u001b[39m');
     });
   });
 
