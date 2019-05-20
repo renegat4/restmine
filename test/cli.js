@@ -17,10 +17,6 @@ describe('Cli', () => {
       cli = new Cli();
     });
 
-    it('should be a function', () => {
-      expect(cli.isIssueBranch).to.be.a('function');
-    });
-
     it('should return the ticket id', () => {
       expect(cli.isIssueBranch('iss1234')).to.deep.equal({ type: 'iss', id: '1234' });
       expect(cli.isIssueBranch('iss1')).to.deep.equal({ type: 'iss', id: '1' });
@@ -54,10 +50,6 @@ describe('Cli', () => {
 
     after(() => {
       api.logTime.restore();
-    });
-
-    it('should be a function', () => {
-      expect(cli.logTime).to.be.a('function');
     });
 
     it('should call api.logTime()', () => {
@@ -104,10 +96,6 @@ describe('Cli', () => {
       cli = new Cli();
     });
 
-    it('should be a function', () => {
-      expect(cli.logTime).to.be.a('function');
-    });
-
     it('should return hours in decimal', () => {
       const oneHour = 60 * 60 * 1000;
       expect(cli.getTimeDelta(0, 2 * oneHour)).to.equal(2);
@@ -129,10 +117,6 @@ describe('Cli', () => {
 
     after(() => {
       git.reflog.restore();
-    });
-
-    it('should be a function', () => {
-      expect(cli.getCheckoutTime).to.be.a('function');
     });
 
     it('should call git.reflog()', () => {
@@ -161,10 +145,6 @@ describe('Cli', () => {
       api.getTicket.restore();
       cli.printTicket.restore();
       cli.takeOver.restore();
-    });
-
-    it('should be a function', () => {
-      expect(cli.getCheckoutTime).to.be.a('function');
     });
 
     it('should call api.getTicket()', () => {
@@ -232,10 +212,6 @@ describe('Cli', () => {
       sinon.stub(cli, 'getTimeDelta').returns(3);
     });
 
-    it('should be a function', () => {
-      expect(cli.leaveIssueBranch).to.be.a('function');
-    });
-
     it('should call cli.getCheckoutTime()', () => {
       cli.leaveIssueBranch(issue, branchName);
       expect(cli.getCheckoutTime).to.have.been.calledWith('test');
@@ -277,10 +253,6 @@ describe('Cli', () => {
       cli = new Cli({}, git, {}, 4);
       sinon.stub(cli, 'getTicket').returns(Promise.resolve('OK'));
       sinon.stub(cli, 'isIssueBranch');
-    });
-
-    it('should be a function', () => {
-      expect(cli.info).to.be.a('function');
     });
 
     describe('issueBranch', () => {
@@ -578,10 +550,6 @@ describe('Cli', () => {
       api.updateTicket.reset();
     });
 
-    it('should be a function', () => {
-      expect(cli.takeOver).to.be.a('function');
-    });
-
     describe('ticket-type == iss', () => {
       const handle = { type: 'iss' };
 
@@ -650,10 +618,6 @@ describe('Cli', () => {
       cli.isIssueBranch.reset();
       git.currentBranchName.reset();
       fs.appendFileSync.reset();
-    });
-
-    it('should be a function', () => {
-      expect(cli.commit_msg).to.be.a('function');
     });
 
     it('should call git.currentBranchName()', () => {
