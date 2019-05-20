@@ -596,6 +596,34 @@ describe('Cli', () => {
 
   });
 
+  describe('tabular()', () => {
+    let cli;
+
+    const fs = {
+      appendFileSync: () => {}
+    };
+
+    const git = {
+      currentBranchName: () => {}
+    };
+
+    before(() => {
+      cli = new Cli({}, git, {}, fs, 1);
+    });
+
+    it('should return aligned collumns', () => {
+      const issues = [
+        { id: 15, subject: 'Das Subject',  priority: { name: 'prio1' }, tracker: { name: 'trac1' }, status: { name: 'stat16' } },
+        { id: 315, subject: 'Das andere Subject',  priority: { name: 'prio2' }, tracker: { name: 'trac51' }, status: { name: 'stat1' } },
+      ];
+      const specs = [ 3, 5, 6, 6 ];
+      let result = cli.tabular(issues[0], specs);
+      expect(result).to.equal('15  │ prio1 │ trac1  │ stat16 │ \u001b[32mDas Subject\u001b[39m');
+      result = cli.tabular(issues[1], specs);
+      expect(result).to.equal('315 │ prio2 │ trac51 │ stat1  │ \u001b[32mDas andere Subject\u001b[39m');
+    });
+  });
+
   describe('commit_msg()', () => {
     let cli;
 
