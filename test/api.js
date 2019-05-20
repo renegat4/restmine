@@ -23,10 +23,6 @@ describe('Api', () => {
       api.sendRequest.reset();
     });
 
-    it('should be a function', () => {
-      expect(api.getTicket).to.be.a('function');
-    });
-
     it('should call sendRequest()', () => {
       api.sendRequest.returns(Promise.resolve('{ "issue": { "id": 17 } }'));
       return api.getTicket(17)
@@ -49,10 +45,6 @@ describe('Api', () => {
       api.sendRequest.reset();
     });
 
-    it('should be a function', () => {
-      expect(api.updateTicket).to.be.a('function');
-    });
-
     it('should call sendRequest()', () => {
       api.sendRequest.returns('hier');
       expect(api.updateTicket(17, 'daten')).to.equal('hier');
@@ -70,10 +62,6 @@ describe('Api', () => {
 
     afterEach(() => {
       api.sendRequest.reset();
-    });
-
-    it('should be a function', () => {
-      expect(api.logTime).to.be.a('function');
     });
 
     it('should call sendRequest()', () => {
