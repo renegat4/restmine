@@ -33,6 +33,86 @@ describe('Api', () => {
     });
   });
 
+  describe('getIssues()', () => {
+    let api;
+
+    before(() => {
+      api = new Api({ https: true, project_id: 17 });
+      sinon.stub(api, 'sendRequest');
+    });
+
+    afterEach(() => {
+      api.sendRequest.reset();
+    });
+
+    it('should call sendRequest()', () => {
+      api.sendRequest.returns(Promise.resolve('{ "issues": [ { "id": 1 }, { "id": 2 } ] }'));
+      return api.getIssues()
+        .then(_ => {
+          expect(_).to.eql([{ id: 1 }, { id: 2 }]);
+          expect(api.sendRequest).to.have.been.calledWith('GET', '/issues.json?project_id=17&sort=priority:desc');
+        });
+    });
+
+    it('should reject with error', () => {
+      api.sendRequest.returns(Promise.reject({ message: 'Das war ein Fehler' }));
+      return api.getIssues()
+        .then(_ => {
+          expect(_).not.to.eql('nie');
+        })
+        .catch(_ => {
+          expect(_).to.eql('Das war ein Fehler');
+        });
+    });
+  });
+
+  describe('runQuerie()', () => {
+    let api;
+
+    before(() => {
+      api = new Api({ https: true, project_id: 17, queries: {'test1': 55} });
+      sinon.stub(api, 'sendRequest');
+    });
+
+    afterEach(() => {
+      api.sendRequest.reset();
+    });
+
+    it('should throw', () => {
+      expect(() => api.runQuerie()).to.throw('missing parameter: "query"');
+    });
+
+    it('should throw', () => {
+      expect(() => api.runQuerie('test')).to.throw('unknown query "test"');
+    });
+
+    it('should not throw', () => {
+      api.sendRequest.returns(Promise.resolve('{}'));
+      expect(() => api.runQuerie('test1')).not.to.throw();
+    });
+
+    it('should call sendRequest()', () => {
+      api.sendRequest.returns(Promise.resolve('{"result": "hier"}'));
+      return api.runQuerie('test1')
+        .then(_ => {
+          expect(_).to.eql({ result: 'hier' });
+          expect(api.sendRequest).to.have.been.calledWith('GET', '/issues.json?project_id=17&query_id=55')
+        });
+    });
+
+    it('should reject with error', () => {
+      api.sendRequest.returns(Promise.reject({ message: 'Das war ein Fehler' }));
+      return api.getIssues()
+        .then(_ => {
+          expect(_).not.to.eql('nie');
+        })
+        .catch(_ => {
+          expect(_).to.eql('Das war ein Fehler');
+        });
+    });
+  });
+
+
   describe('updateTicket()', () => {
     let api;
 
