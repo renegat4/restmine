@@ -25,6 +25,8 @@ will scan the commits and link them to issue #1234.
 When the work is done, checkout master again. Now restmine will log the time
 spent on that issue in redmine with the configured activity id.
 
+If you dont want the time tracking, add `autoLogTime: false` to your `.restmine.json`.
+
 
 The prefix `iss` is the default which triggers the take-over of an issue. You
 are free to configure other prefixes with individual activity ids, but only
